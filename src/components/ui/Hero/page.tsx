@@ -10,7 +10,7 @@ export default function Hero() {
         fill
         priority
         className="object-cover object-center"
-        quality={100}
+        quality={75}
       />
 
       <div className="absolute inset-0 bg-black/50" />
