@@ -12,10 +12,10 @@ import {
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
@@ -38,13 +38,14 @@ export function LoginForm({
           <form>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="username">Tài khoản</FieldLabel>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="mail@example.com"
-                  autoComplete="email"
+                  id="username"
+                  type="text"
+                  placeholder="Nhập tài khoản hoặc email"
+                  autoComplete="username"
                 />
+                <FieldError />
               </Field>
               <Field>
                 <div className="flex items-center">
@@ -63,6 +64,7 @@ export function LoginForm({
                   type="password"
                   autoComplete="current-password"
                 />
+                <FieldError />
               </Field>
               <Field>
                 <Button type="submit" className="w-full">
@@ -71,6 +73,7 @@ export function LoginForm({
                 <Button variant="outline" type="button">
                   Đăng nhập với Google
                 </Button>
+
                 <FieldDescription className="text-center">
                   Chưa có tài khoản?
                   <Link href="#">
