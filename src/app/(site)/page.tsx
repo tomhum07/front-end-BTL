@@ -231,7 +231,7 @@ export default function Home() {
                     key={stat.label}
                     className="rounded-lg border bg-muted/20 px-3 py-4 text-center"
                   >
-                    <p className="text-xl font-semibold text-primary md:text-2xl">
+                    <p className="text-xl font-semibold text-primary md:text-2xl hover:text-pink-600 hover:translate-y-[-2px]">
                       {stat.value}
                     </p>
                     <p className="mt-1 text-sm text-muted-foreground">

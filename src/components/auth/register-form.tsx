@@ -66,6 +66,7 @@ function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
                   id="password"
                   type="password"
                   autoComplete="new-password"
+                  placeholder="******"
                 />
                 <FieldError />
               </Field>
@@ -79,6 +80,7 @@ function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
                   id="rePassword"
                   type="password"
                   autoComplete="new-password"
+                  placeholder="******"
                 />
                 <FieldError />
               </Field>
