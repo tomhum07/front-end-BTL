@@ -39,6 +39,16 @@ function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
           <form>
             <FieldGroup>
               <Field>
+                <FieldLabel htmlFor="fullname">Họ và tên</FieldLabel>
+                <Input
+                  id="fullname"
+                  type="text"
+                  placeholder="Nhập họ và tên"
+                  autoComplete="name"
+                />
+                <FieldError />
+              </Field>
+              <Field>
                 <FieldLabel htmlFor="username">Tên tài khoản</FieldLabel>
                 <Input
                   id="username"
