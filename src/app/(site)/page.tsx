@@ -57,7 +57,7 @@ const serviceLinks = [
 ];
 
 const basicStats = [
-  { label: "Dân số", value: "137.387" },
+  { label: "Dân số", value: "184.297" },
   { label: "Khóm", value: "49" },
   { label: "Dịch vụ công trực tuyến", value: "35" },
   { label: "Sự kiện cộng đồng / năm", value: "40+" },
@@ -231,7 +231,7 @@ export default function Home() {
                     key={stat.label}
                     className="rounded-lg border bg-muted/20 px-3 py-4 text-center"
                   >
-                    <p className="text-xl font-semibold text-primary md:text-2xl hover:text-pink-600 hover:translate-y-[-2px]">
+                    <p className="text-xl font-semibold text-primary md:text-2xl hover:text-pink-500 hover:translate-y-[-2px]">
                       {stat.value}
                     </p>
                     <p className="mt-1 text-sm text-muted-foreground">
