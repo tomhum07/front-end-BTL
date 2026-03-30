@@ -42,12 +42,12 @@ export function LoginForm({
           <form>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="username">Tài khoản</FieldLabel>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
-                  id="username"
-                  type="text"
-                  placeholder="Nhập tài khoản hoặc email"
-                  autoComplete="username"
+                  id="email"
+                  type="email"
+                  placeholder="mail@example.com"
+                  autoComplete="email"
                 />
                 <FieldError />
               </Field>
