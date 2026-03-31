@@ -222,19 +222,10 @@ export function LoginForm({
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="mail@example.com"
-                  autoComplete="email"
-                  value={formData.email}
-                  onChange={(event) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      email: event.target.value,
-                    }))
-                  }
-                  onKeyDown={(event) => handleEnterKey(event, "email")}
-                  disabled={isSubmitting}
+                  id="username"
+                  type="text"
+                  placeholder="Nhập tài khoản hoặc email"
+                  autoComplete="username"
                 />
                 <FieldError />
               </Field>
@@ -242,7 +233,7 @@ export function LoginForm({
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Mật khẩu</FieldLabel>
                   <Link
-                    href="#"
+                    href="/quen-mat-khau"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     <Button variant="link" className="ml-auto p-0">

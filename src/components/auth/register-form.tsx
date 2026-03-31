@@ -173,34 +173,8 @@ function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
                 <Input
                   id="fullname"
                   type="text"
-                  placeholder="Nhập họ và tên"
-                  autoComplete="name"
-                  value={formData.fullname}
-                  onChange={(event) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      fullname: event.target.value,
-                    }))
-                  }
-                  disabled={isSubmitting}
-                />
-                <FieldError />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="mail@example.com"
-                  autoComplete="email"
-                  value={formData.email}
-                  onChange={(event) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      email: event.target.value,
-                    }))
-                  }
-                  disabled={isSubmitting}
+                  placeholder="Nhập tên tài khoản hoặc email"
+                  autoComplete="username"
                 />
                 <FieldError />
               </Field>
@@ -212,14 +186,6 @@ function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
                   id="password"
                   type="password"
                   autoComplete="new-password"
-                  value={formData.password}
-                  onChange={(event) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      password: event.target.value,
-                    }))
-                  }
-                  disabled={isSubmitting}
                 />
                 <FieldError />
               </Field>
@@ -233,14 +199,6 @@ function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
                   id="rePassword"
                   type="password"
                   autoComplete="new-password"
-                  value={formData.rePassword}
-                  onChange={(event) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      rePassword: event.target.value,
-                    }))
-                  }
-                  disabled={isSubmitting}
                 />
                 <FieldError />
               </Field>

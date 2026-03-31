@@ -33,7 +33,7 @@ export default function GioiThieuPage() {
         </h1>
       </div>
       <section className="mt-8">
-        <div className="mt-4 grid gap-4 md:grid-cols-2">
+        <div className="mt-4 grid gap-4 lg:grid-cols-3 md:grid-cols-2">
           {introSections.map((section) => (
             <article
               key={section.href}
