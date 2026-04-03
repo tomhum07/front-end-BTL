@@ -33,21 +33,135 @@ type OTPFormProps = {
   email?: string;
 };
 
+type OTPResponse = {
+  message?: string;
+};
+
 export function OTPForm({ email = "m@example.com" }: OTPFormProps) {
   const router = useRouter();
-  const [otp, setOtp] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const apiBaseUrl =
+    process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5265";
+  const verifyOtpEndpoint =
+    process.env.NEXT_PUBLIC_API_VERIFY_OTP_ENDPOINT ?? "/api/Auth/verify-otp";
+  const forgotPasswordEndpoint =
+    process.env.NEXT_PUBLIC_API_FORGOT_PASSWORD_ENDPOINT ??
+    "/api/Auth/forgot-password";
 
-  const handleVerifyOTP = (event: FormEvent<HTMLFormElement>) => {
+  const [otp, setOtp] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+  const [status, setStatus] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
+  const handleVerifyOTP = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (otp.length !== 6) {
-      setError("Vui lòng nhập đầy đủ 6 số OTP.");
+    if (!email?.trim()) {
+      setStatus({
+        type: "error",
+        message: "Không tìm thấy email. Vui lòng quay lại bước trước.",
+      });
       return;
     }
 
-    setError(null);
-    router.push(`/tao-mat-khau?email=${encodeURIComponent(email)}`);
+    if (otp.length !== 6) {
+      setStatus({
+        type: "error",
+        message: "Vui lòng nhập đầy đủ 6 số OTP.",
+      });
+      return;
+    }
+
+    setStatus(null);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(`${apiBaseUrl}${verifyOtpEndpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          otp,
+        }),
+      });
+
+      const payload = (await response.json().catch(() => null)) as OTPResponse | null;
+
+      if (!response.ok) {
+        throw new Error(payload?.message || "Mã OTP không hợp lệ hoặc đã hết hạn.");
+      }
+
+      setStatus({
+        type: "success",
+        message: payload?.message || "Xác minh OTP thành công.",
+      });
+
+      router.push(
+        `/tao-mat-khau?email=${encodeURIComponent(email.trim())}&otp=${encodeURIComponent(otp)}`,
+      );
+    } catch (error) {
+      setStatus({
+        type: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Không thể xác minh OTP lúc này. Vui lòng thử lại sau.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    if (!email?.trim()) {
+      setStatus({
+        type: "error",
+        message: "Không tìm thấy email để gửi lại OTP.",
+      });
+      return;
+    }
+
+    setStatus(null);
+    setIsResending(true);
+
+    try {
+      const response = await fetch(`${apiBaseUrl}${forgotPasswordEndpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+        }),
+      });
+
+      const payload = (await response.json().catch(() => null)) as OTPResponse | null;
+
+      if (!response.ok) {
+        throw new Error(payload?.message || "Không thể gửi lại OTP. Vui lòng thử lại.");
+      }
+
+      setStatus({
+        type: "success",
+        message: payload?.message || "Đã gửi lại mã OTP tới email của bạn.",
+      });
+    } catch (error) {
+      setStatus({
+        type: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Không thể gửi lại OTP lúc này. Vui lòng thử lại sau.",
+      });
+    } finally {
+      setIsResending(false);
+    }
   };
 
   return (
@@ -69,9 +183,15 @@ export function OTPForm({ email = "m@example.com" }: OTPFormProps) {
           <Field>
             <div className="flex items-center justify-between">
               <FieldLabel htmlFor="otp-verification">Mã xác minh</FieldLabel>
-              <Button variant="outline" size="xs" type="button">
+              <Button
+                variant="outline"
+                size="xs"
+                type="button"
+                onClick={handleResendOtp}
+                disabled={isResending || isSubmitting}
+              >
                 <RefreshCwIcon />
-                Gửi lại mã
+                {isResending ? "Đang gửi..." : "Gửi lại mã"}
               </Button>
             </div>
 
@@ -81,10 +201,13 @@ export function OTPForm({ email = "m@example.com" }: OTPFormProps) {
               required
               containerClassName="justify-center"
               value={otp}
-              onChange={(value) => {
+              onChange={(value: string) => {
                 setOtp(value);
-                if (error) setError(null);
+                if (status?.type === "error") {
+                  setStatus(null);
+                }
               }}
+              disabled={isSubmitting}
             >
               <InputOTPGroup>
                 <InputOTPSlot index={0} className="h-12 w-11 text-xl" />
@@ -99,7 +222,11 @@ export function OTPForm({ email = "m@example.com" }: OTPFormProps) {
               </InputOTPGroup>
             </InputOTP>
 
-            <FieldError>{error}</FieldError>
+            <FieldError
+              className={status?.type === "success" ? "text-green-600" : undefined}
+            >
+              {status?.message}
+            </FieldError>
 
             <FieldDescription>
               <a href="#">
@@ -113,9 +240,9 @@ export function OTPForm({ email = "m@example.com" }: OTPFormProps) {
             <Button
               type="submit"
               className="w-full"
-              disabled={otp.length !== 6}
+              disabled={otp.length !== 6 || isSubmitting}
             >
-              Xác minh
+              {isSubmitting ? "Đang xác minh..." : "Xác minh"}
             </Button>
             <div className="text-sm text-muted-foreground">
               Bạn gặp sự cố khi đăng nhập?{" "}

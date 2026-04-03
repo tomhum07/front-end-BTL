@@ -113,11 +113,9 @@ function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
         },
         body: JSON.stringify({
           fullName: formData.fullname.trim(),
-          username: formData.email.trim(),
           email: formData.email.trim(),
           password: formData.password,
           confirmPassword: formData.rePassword,
-          role: "viewer",
         }),
       });
 
@@ -157,7 +155,7 @@ function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
         <CardHeader>
           <CardTitle className="text-xl font-bold">Đăng ký</CardTitle>
           <CardDescription>
-            Nhập tên tài khoản hoặc email của bạn bên dưới để tạo tài khoản
+            Nhập thông tin của bạn bên dưới để tạo tài khoản
           </CardDescription>
           <CardAction>
             <Link href="/">
@@ -173,8 +171,34 @@ function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
                 <Input
                   id="fullname"
                   type="text"
-                  placeholder="Nhập tên tài khoản hoặc email"
-                  autoComplete="username"
+                  placeholder="Nhập họ và tên"
+                  autoComplete="name"
+                  value={formData.fullname}
+                  onChange={(event) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      fullname: event.target.value,
+                    }))
+                  }
+                  disabled={isSubmitting}
+                />
+                <FieldError />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Nhập email"
+                  autoComplete="email"
+                  value={formData.email}
+                  onChange={(event) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      email: event.target.value,
+                    }))
+                  }
+                  disabled={isSubmitting}
                 />
                 <FieldError />
               </Field>
@@ -186,6 +210,14 @@ function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
                   id="password"
                   type="password"
                   autoComplete="new-password"
+                  value={formData.password}
+                  onChange={(event) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      password: event.target.value,
+                    }))
+                  }
+                  disabled={isSubmitting}
                 />
                 <FieldError />
               </Field>
@@ -199,6 +231,14 @@ function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
                   id="rePassword"
                   type="password"
                   autoComplete="new-password"
+                  value={formData.rePassword}
+                  onChange={(event) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      rePassword: event.target.value,
+                    }))
+                  }
+                  disabled={isSubmitting}
                 />
                 <FieldError />
               </Field>

@@ -130,7 +130,8 @@ export function Navbar() {
         });
 
         if (!response.ok) {
-          throw new Error(`Failed to load services: ${response.status}`);
+          console.warn(`Failed to load services: ${response.status}`);
+          return;
         }
 
         const data: Service[] = await response.json();

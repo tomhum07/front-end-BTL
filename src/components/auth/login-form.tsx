@@ -91,7 +91,10 @@ function getRoleFromToken(token?: string): string | undefined {
 }
 
 function getRouteByRole(role: AppRole): string {
-  if (role === "admin" || role === "editor") {
+  if (role === "admin") {
+    return "/dashboard";
+  }
+  if (role === "editor") {
     return "/quan-tri";
   }
 
@@ -158,7 +161,7 @@ export function LoginForm({
           Accept: "application/json",
         },
         body: JSON.stringify({
-          username: formData.email.trim(),
+          email: formData.email.trim(),
           password: formData.password,
         }),
       });
@@ -222,10 +225,19 @@ export function LoginForm({
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
-                  id="username"
-                  type="text"
-                  placeholder="Nhập tài khoản hoặc email"
-                  autoComplete="username"
+                  id="email"
+                  type="email"
+                  placeholder="Nhập email"
+                  autoComplete="email"
+                  value={formData.email}
+                  onChange={(event) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      email: event.target.value,
+                    }))
+                  }
+                  onKeyDown={(event) => handleEnterKey(event, "email")}
+                  disabled={isSubmitting}
                 />
                 <FieldError />
               </Field>
